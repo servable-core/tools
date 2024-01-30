@@ -1,13 +1,13 @@
-# Servable Manifest Tool
+# Servable Tools
 
 > [!WARNING]
 > Servable is still experimental and its api may change in the future.
 
 ![logo](/static/img/polar-bear-4.png)
 
-[![npm Package](https://img.shields.io/npm/v/servable-manifest.svg?style=flat-square)](https://www.npmjs.org/package/servable-manifest)
-[![NPM Downloads](https://img.shields.io/npm/dm/servable-manifest.svg)](https://npmjs.org/package/servable-manifest)
-[![Build Status](https://github.com/servable-core/servable-manifest/actions/workflows/release.yml/badge.svg)](https://github.com/servable-core/servable-manifest/actions/tests.yml)
+[![npm Package](https://img.shields.io/npm/v/@servable/tools.svg?style=flat-square)](https://www.npmjs.org/package/@servable/tools)
+[![NPM Downloads](https://img.shields.io/npm/dm/@servable/tools.svg)](https://npmjs.org/package/@servable/tools)
+[![Build Status](https://github.com/servable-core/tools/actions/workflows/release.yml/badge.svg)](https://github.com/servable-core/tools/actions/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -18,32 +18,21 @@ You can find here the complete [servable documentation](https://docs.servable.ap
 
 ## Install
 ```bash
-yarn add servable-manifest
+yarn add @servable/tools
 ```
 
 
 ## Quickstart
-
-
-To make use of servable-manifest you need [generator-servable](https://github.com/servable-core/generator-servable)
-
-The Yeoman generator will walk you through the steps required to create your app or feature prompting for the required information.
+To make use of @servable/tools you need [Servable CLI](https://github.com/servable-core/cli)
 
 ```bash
-yarn global add yo
-yarn global add generator-servable
-```
-
-To launch the generator simply type:
-
-```bash
-yo servable
+npx @servable/cli
 ```
 
 
 **Servable** is a Node JS framework built on top of Express JS and Parse Server and tailored for features. It provides a concise, easy to use and scalable template to get the best of Parse Server and features.
 
-Servable at its core is a server template that uses the servable-manifest to orchestrate the different features used in an application. Servable streamlines the server development by separating every "groupable" logic to be a feature, so that it is organically extracted from the base code and possibly migrated into its own package. By doing so, Servable enforces a clear separation of concerns pattern out of the box.
+Servable at its core is a server template that uses the servable server to orchestrate the different features used in an application. Servable streamlines the server development by separating every "groupable" logic to be a feature, so that it is organically extracted from the base code and possibly migrated into its own package. By doing so, Servable enforces a clear separation of concerns pattern out of the box.
 
 Main features:
 - Quick start and Plug & Play Node JS framework
