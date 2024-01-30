@@ -1,0 +1,24 @@
+import featureApiVersion from '../../../lib/featureApiVersion.js'
+import _path from "path"
+import { fileURLToPath } from "url"
+import { dirname } from "path"
+import checkFileExists from '../../../lib/checkFileExists.js'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+export default async props => {
+  const { path, } = props
+  const apiVersion = await featureApiVersion({ path })
+  if (!apiVersion) {
+    throw new Error('No api version found')
+  }
+
+  const modulePath = _path.resolve(__dirname, `../../${apiVersion}/generateGithubReadme/index.js`)
+  if (!(await checkFileExists(modulePath))) {
+    throw new Error('No module found for api version')
+  }
+
+  console.log('EZZEZEZEZEZE', apiVersion)
+  const module = (await import(modulePath)).default
+  return module(props)
+}

@@ -1,0 +1,145 @@
+{
+  "id": "root",
+  "name": "schema",
+  "description": "schema",
+  "routes": [
+    {
+      "type": "folder",
+      "path": "",
+      "priority": 0,
+      "children": [
+        {
+          "id": "index",
+          "routes": [
+            {
+              "type": "file",
+              "path": "index",
+              "mimeTypes": [
+                "application/json"
+              ],
+              "priority": 0
+            },
+            {
+              "type": "file",
+              "path": "index",
+              "mimeTypes": [
+                "text/javascript"
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "id": "classes",
+          "routes": [
+            {
+              "type": "file",
+              "path": "classes",
+              "mimeTypes": [
+                "application/json"
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "id": "classLevelPermission",
+          "routes": [
+            {
+              "type": "file",
+              "path": "classlevelpermission",
+              "mimeTypes": [
+                "application/json"
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "id": "fields",
+          "routes": [
+            {
+              "type": "file",
+              "path": "fields",
+              "mimeTypes": [
+                "application/json"
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "id": "indexes",
+          "routes": [
+            {
+              "type": "file",
+              "path": "indexes",
+              "mimeTypes": [
+                "application/json"
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "id": "migration",
+          "routes": [
+            {
+              "type": "folder",
+              "path": "migration",
+              "priority": 0,
+              "children": [
+                {
+                  "id": "down",
+                  "routes": [
+                    {
+                      "type": "folder",
+                      "path": "down",
+                      "children": [
+                        {
+                          "id": "index",
+                          "routes": [
+                            {
+                              "type": "file",
+                              "path": "index",
+                              "mimeTypes": [
+                                "text/javascript"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "up",
+                  "routes": [
+                    {
+                      "type": "folder",
+                      "path": "up",
+                      "children": [
+                        {
+                          "id": "index",
+                          "routes": [
+                            {
+                              "type": "file",
+                              "path": "index",
+                              "mimeTypes": [
+                                "text/javascript"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
