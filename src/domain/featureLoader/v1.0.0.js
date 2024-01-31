@@ -631,7 +631,7 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
       return null
     }
 
-    const path = `${this.path}/schema/${version}/${subPath}`
+    const path = `${this.path}/schema/${version}/migration/${subPath}/index.js`
     if (!(await checkFileExists(path))) {
       return null
     }

@@ -18,7 +18,6 @@ export default async ({ servableConfig }) => {
     servableConfig,
     featuresCache,
     instancesPathId: [
-      // { type: 'class', value: { className: '_root' } },
       { type: 'feature', value: { id: 'app' } }
     ],
   })

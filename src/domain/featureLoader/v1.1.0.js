@@ -21,8 +21,8 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
 
-    const path = `${this.path}/models/${className.toLowerCase()}target/class/index.js`
-    // const path = `${this.path}/models/${className.toLowerCase()}target/class/index.js`
+    const path = `${this.path}/models/${className.toLowerCase()}target/class.js`
+    // const path = `${this.path}/models/${className.toLowerCase()}target/class.js`
 
     if (!(await checkFileExists(path))) {
       //console.log('class>', className, 'file does not exist', path)
@@ -419,7 +419,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return null
     }
 
-    const path = `${this.path}/schema/${version}/${subPath}`
+    const path = `${this.path}/schema/${version}/${subPath}.js`
     if (!(await checkFileExists(path))) {
       return null
     }
@@ -448,7 +448,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
     }
 
     let data = mergeClassFeatures({ items, _class, withFeaturesFeatures })
-    const path = `${this.path}/models/${className.toLowerCase()}target/class/features.js`
+    const path = `${this.path}/models/${className.toLowerCase()}target/features.js`
 
     if ((await checkFileExists(path))) {
 
@@ -473,7 +473,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
 
-    let path = `${this.path}target/class/features.js`
+    let path = `${this.path}target/features.js`
     if (!(await checkFileExists(path))) {
       return null
     }
@@ -490,7 +490,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
 
-    const path = `${this.path}target/class/index.js`
+    const path = `${this.path}target/class.js`
     if (!(await checkFileExists(path))) {
       return null
     }
