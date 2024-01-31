@@ -11,7 +11,7 @@ export default class Servable {
     }
   }
 
-  async hydrate({ servableConfig, frameworkBridge, app }) {
+  async hydrate({ servableConfig, engine, app }) {
 
   }
 

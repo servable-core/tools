@@ -26,7 +26,7 @@ const perform = async ({
   }
 
   if (feature.id === 'app') {
-    await Servable.frameworkBridge.formatAppClassesSchemas({ classesSchemas })
+    await Servable.engine.formatAppClassesSchemas({ classesSchemas })
   }
 
   let adaptedClassesStructs = []
