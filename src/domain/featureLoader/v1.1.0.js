@@ -21,7 +21,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
 
-    const path = `${this.path}/models/${className.toLowerCase()}target/class.js`
+    const path = `${this.path}/models/${className.toLowerCase()}/class.js`
     // const path = `${this.path}/models/${className.toLowerCase()}target/class.js`
 
     if (!(await checkFileExists(path))) {
@@ -473,7 +473,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
 
-    let path = `${this.path}target/features.js`
+    let path = `${this.path}/features.js`
     if (!(await checkFileExists(path))) {
       return null
     }
@@ -490,7 +490,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
 
-    const path = `${this.path}target/class.js`
+    const path = `${this.path}/class.js`
     if (!(await checkFileExists(path))) {
       return null
     }
