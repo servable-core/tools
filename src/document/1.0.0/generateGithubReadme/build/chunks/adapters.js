@@ -3,7 +3,7 @@ export default async props => {
   const { mainPackage } = props
   const payload = []
   payload.push({
-    h2: 'Compatible framework bridges'
+    h2: 'Compatible engines'
   })
 
   if (!mainPackage || !mainPackage.adapters || !mainPackage.adapters.length) {

@@ -57,7 +57,6 @@ export default async props => {
     }
   }
 
-
   chunks.githubTags = await buildGithubTags({ path, npmPackageName, githubPackageName })
   // payload.push({ h2: chunks.githubTags.name })
   payload = payload.concat(chunks.githubTags.payload)

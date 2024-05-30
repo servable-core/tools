@@ -76,7 +76,6 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
 
     const prefix = `${this.path}/classes/${className.toLowerCase()}/triggers`
 
-
     const data = {}
     for (var i = 0; i < triggerItems.length; i++) {
       const item = triggerItems[i]

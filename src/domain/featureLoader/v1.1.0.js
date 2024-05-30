@@ -448,7 +448,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
     }
 
     let data = mergeClassFeatures({ items, _class, withFeaturesFeatures })
-    const path = `${this.path}/models/${className.toLowerCase()}target/features.js`
+    const path = `${this.path}/models/${className.toLowerCase()}/features.js`
 
     if ((await checkFileExists(path))) {
 
