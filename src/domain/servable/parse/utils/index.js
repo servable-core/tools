@@ -60,6 +60,29 @@ export const performBatchOnQuery = async ({
   } while (loops < expectedLoops || currentBatchResultsLength === batchSize);
 };
 
+export const performBatchOnQueryPerGroup = async ({
+  query,
+  batchSize = 100,
+  action
+}) => {
+  const count = await query.count({ useMasterKey: true });
+  const expectedLoops = parseInt(count / batchSize);
+  let currentBatchResultsLength = 0;
+  let loops = 0;
+
+  do {
+    query.skip(batchSize * loops);
+    query.limit(batchSize);
+    const items = await query.find({ useMasterKey: true });
+    if (items && items.length) {
+      await action({ items })
+    }
+
+    currentBatchResultsLength = items.length;
+    loops++;
+  } while (loops < expectedLoops || currentBatchResultsLength === batchSize);
+};
+
 export const fetchObjectIfNeeded = async ({
   object,
   className,
@@ -111,8 +134,8 @@ export const destroyRowsWithQuery = async ({ query, limitPerBatch } = {}) => {
   query
     .limit(limitPerBatch)
     .find()
-    .then(function(results) {
-      return Servable.App.Object.destroyAll(results).then(function() {
+    .then(function (results) {
+      return Servable.App.Object.destroyAll(results).then(function () {
         return Promise.resolve(results.length);
       });
     });
@@ -122,7 +145,7 @@ export const destroyAllRowsWithQuery = async ({
   query,
   limitPerBatch = 1000
 } = {}) => {
-  return destroyRowsWithQuery({ query, limitPerBatch }).then(function(count) {
+  return destroyRowsWithQuery({ query, limitPerBatch }).then(function (count) {
     return count
       ? destroyAllRowsWithQuery({ query, limitPerBatch })
       : Promise.resolve();
