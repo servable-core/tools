@@ -642,7 +642,7 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
 
-    const path = `${this.path}/jobs_`
+    const path = `${this.path}/jobs`
     if (!(await checkFileExists(path))) {
       return null
     }
