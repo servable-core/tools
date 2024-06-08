@@ -15,6 +15,8 @@ import triggerItems from './lib/triggerItems.js'
 
 export default class FeatureLoaderV1_0_0 extends BaseClass {
 
+  // #region class
+
   async getClass({ className }) {
     const cacheKey = 'class'
     if (this._valueInCache(cacheKey)) {
@@ -22,31 +24,12 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
     }
 
     const path = `${this.path}/classes/${className.toLowerCase()}/class/index.js`
-    // const path = `${this.path}/classes/${className.toLowerCase()}/class/index.js`
 
     if (!(await checkFileExists(path))) {
-      //console.log('class>', className, 'file does not exist', path)
-      const externalClassesPath = `${this.path}/classes/external`
-      if (!(await checkFileExists(externalClassesPath))) {
-        return null
-      }
-      try {
-        const data = (await import(externalClassesPath)).default
-        if (!data) {
-          //console.log('class>', className, 'data null')
-          return null
-        }
-        // //console.log('class>', className, 'dataff', data)
-        return data[className]
-      } catch (e) {
-        console.error(e)
-        return null
-      }
+      return null
     }
-    // //console.log('class>', className, 'file exists')
-    const dd = await this._importJSDefault({ path, })
-    // //console.log('class>', className, 'file exists', dd)
-    return dd
+
+    return this._importJSDefault({ path, })
   }
 
   async classFunctions({ className }) {
@@ -64,7 +47,6 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
     }
 
     const data = (await directoryFilesRecursive({ path }))
-    //this.cache[cacheKey] = data
     return data
   }
 
@@ -224,6 +206,85 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
     return result
   }
 
+
+  classConfigFolder({ className }) {
+    return `${this.path}/classes/${className.toLowerCase()}/config`
+  }
+
+  async classConfigDataFiles({ className }) {
+    const cacheKey = 'classConfigDataFiles'
+    if (this._valueInCache(cacheKey)) {
+      return this._valueInCache(cacheKey)
+    }
+
+    const path = this.classConfigFolder({ className })
+    const result = {}
+
+    const valuesPath = `${path}/entries.json`
+    if ((await checkFileExists(valuesPath))) {
+      result.entries = await importJSONAsync(valuesPath)
+    }
+
+    const conditionsPath = `${path}/conditions.json`
+    if ((await checkFileExists(conditionsPath))) {
+      result.conditions = await importJSONAsync(conditionsPath)
+    }
+
+    const groupsPath = `${path}/groups.json`
+    if ((await checkFileExists(groupsPath))) {
+      result.groups = await importJSONAsync(groupsPath)
+    }
+
+    return result
+  }
+
+
+  async classFeatures({ className, withFeaturesFeatures = false }) {
+    const cacheKey = 'class'
+    // //console.log('classFeatures>', className, 'enter')
+    if (this._valueInCache(cacheKey)) {
+      return this._valueInCache(cacheKey)
+    }
+    const items = []
+    const seedMode = await this.classSeedMode({ className })
+    // //console.log('classFeatures>', className, 'seedmode', seedMode)
+    if (seedMode === 'auto') {
+      items.push({ id: 'servableautoseedable' })
+    }
+    const _class = await this.getClass({ className })
+    if (!_class) {
+      //console.log('classFeatures>', className, 'no _class')
+      return items
+    }
+
+    let data = mergeClassFeatures({ items, _class, withFeaturesFeatures })
+    const path = `${this.path}/classes/${className.toLowerCase()}/class/protocols.js`
+
+    if ((await checkFileExists(path))) {
+
+      let _data = (await import(path)).default
+      // //console.log('classFeatures>', className, '_data', _data)
+      _data = _data ? _data : []
+      data = [...data,
+      ..._data]
+    }
+
+    //this.cache[cacheKey] = data
+    data = cleanFeatures(data)
+    // result = _.uniq(result, a => a.id)
+    // //console.log('classFeatures>', className, 'finaldata', data)
+    return data
+  }
+
+  // #endregion
+
+
+
+
+
+
+
+
   async afterInit() {
     const cacheKey = 'afterInit'
     if (this._valueInCache(cacheKey)) {
@@ -264,37 +325,6 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
     }
 
     const path = this.configFolder()
-    const result = {}
-
-    const valuesPath = `${path}/entries.json`
-    if ((await checkFileExists(valuesPath))) {
-      result.entries = await importJSONAsync(valuesPath)
-    }
-
-    const conditionsPath = `${path}/conditions.json`
-    if ((await checkFileExists(conditionsPath))) {
-      result.conditions = await importJSONAsync(conditionsPath)
-    }
-
-    const groupsPath = `${path}/groups.json`
-    if ((await checkFileExists(groupsPath))) {
-      result.groups = await importJSONAsync(groupsPath)
-    }
-
-    return result
-  }
-
-  classConfigFolder({ className }) {
-    return `${this.path}/classes/${className.toLowerCase()}/config`
-  }
-
-  async classConfigDataFiles({ className }) {
-    const cacheKey = 'classConfigDataFiles'
-    if (this._valueInCache(cacheKey)) {
-      return this._valueInCache(cacheKey)
-    }
-
-    const path = this.classConfigFolder({ className })
     const result = {}
 
     const valuesPath = `${path}/entries.json`
@@ -451,6 +481,7 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
 
 
 
+  //#region schema
 
   async classesSchemas(props) {
     // if (this.valueInCache('classes')) {
@@ -640,42 +671,9 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
     return data
   }
 
-  async classFeatures({ className, withFeaturesFeatures = false }) {
-    const cacheKey = 'class'
-    // //console.log('classFeatures>', className, 'enter')
-    if (this._valueInCache(cacheKey)) {
-      return this._valueInCache(cacheKey)
-    }
-    const items = []
-    const seedMode = await this.classSeedMode({ className })
-    // //console.log('classFeatures>', className, 'seedmode', seedMode)
-    if (seedMode === 'auto') {
-      items.push({ id: 'servableautoseedable' })
-    }
-    const _class = await this.getClass({ className })
-    if (!_class) {
-      //console.log('classFeatures>', className, 'no _class')
-      return items
-    }
+  //#endregion
 
-    let data = mergeClassFeatures({ items, _class, withFeaturesFeatures })
-    const path = `${this.path}/classes/${className.toLowerCase()}/class/protocols.js`
 
-    if ((await checkFileExists(path))) {
-
-      let _data = (await import(path)).default
-      // //console.log('classFeatures>', className, '_data', _data)
-      _data = _data ? _data : []
-      data = [...data,
-      ..._data]
-    }
-
-    //this.cache[cacheKey] = data
-    data = cleanFeatures(data)
-    // result = _.uniq(result, a => a.id)
-    // //console.log('classFeatures>', className, 'finaldata', data)
-    return data
-  }
 
 
   async ownFeatures() {
@@ -722,7 +720,7 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
 
     return this._importJSDefault({ path, })
   }
-
+  //#region system
   async systemDockerCompose() {
     const cacheKey = 'systemDockerCompose'
     if (this._valueInCache(cacheKey)) {
@@ -790,7 +788,7 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
     return this._importJSDefault({ path, })
   }
 
-
+  //#endregion
 
   async functions() {
     const cacheKey = 'functions'
