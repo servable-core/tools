@@ -835,7 +835,12 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
       return null
     }
 
-    const data = (await directoryGlob({ path: `${path}/**/*.js` }))
+    const data = (await directoryGlob({
+      path: `${path}/**/*.js`, globOptions: {
+        mark: true,
+        ignore: ['**/lib/**']
+      }
+    }))
     return data
   }
 

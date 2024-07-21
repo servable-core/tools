@@ -830,7 +830,12 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return null
     }
 
-    const data = (await directoryGlob({ path: `${path}/**/*.js` }))
+    const data = (await directoryGlob({
+      path: `${path}/**/*.js`, globOptions: {
+        mark: true,
+        ignore: ['**/lib/**']
+      }
+    }))
     return data
   }
 
@@ -840,7 +845,12 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return null
     }
 
-    const data = (await directoryGlob({ path: `${path}/**/*.js` }))
+    const data = (await directoryGlob({
+      path: `${path}/**/*.js`, globOptions: {
+        mark: true,
+        ignore: ['**/lib/**']
+      }
+    }))
     return data
   }
 
