@@ -844,6 +844,22 @@ export default class FeatureLoaderV1_0_0 extends BaseClass {
     return data
   }
 
+  async liveQueries() {
+    let path = `${this.path}/livequeries`
+    if (!(await checkFileExists(path))) {
+      return null
+    }
+
+    const data = (await directoryGlob({
+      path: `${path}/**/*.js`, globOptions: {
+        mark: true,
+        ignore: ['**/lib/**']
+      }
+    }))
+    return data
+  }
+
+
   async jobFiles() {
     const cacheKey = 'jobFiles'
     if (this._valueInCache(cacheKey)) {

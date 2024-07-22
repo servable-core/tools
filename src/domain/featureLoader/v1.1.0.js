@@ -711,12 +711,12 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return this._valueInCache(cacheKey)
     }
     //#TODO
-    const path = `${this.path}/liveclasses.js`
-    if (!(await checkFileExists(path))) {
-      return null
+    const main = await this.main()
+    if (!main) {
+      return []
     }
 
-    return this._importJSDefault({ path, })
+    return main.liveClasses
   }
 
   //#region system
@@ -854,6 +854,20 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
     return data
   }
 
+  async liveQueries() {
+    let path = `${this.path}/livequeries`
+    if (!(await checkFileExists(path))) {
+      return null
+    }
+
+    const data = (await directoryGlob({
+      path: `${path}/**/*.js`, globOptions: {
+        mark: true,
+        ignore: ['**/lib/**']
+      }
+    }))
+    return data
+  }
 
   async jobFiles() {
     const cacheKey = 'jobFiles'

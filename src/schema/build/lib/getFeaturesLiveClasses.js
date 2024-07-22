@@ -7,6 +7,10 @@ export default async ({ features }) => {
     if (!fn) {
       return null
     }
+    if (typeof fn !== 'function') {
+      return null
+    }
+
     return fn()
   }))).filter(a => a)
   items = _.uniq(_.flatten(items))
