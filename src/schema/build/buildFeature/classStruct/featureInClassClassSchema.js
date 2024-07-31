@@ -24,10 +24,40 @@ export default async (props) => {
 
     //#TODO: feature.loader
     const _classLevelPermissions = await feature.loader.schemaClassLevelPermissions()
-    if (_classLevelPermissions) {
-      const __classLevelPermissions = preserveMostRestricted([_classSchema.classLevelPermissions, _classLevelPermissions])
-      _classSchema.classLevelPermissions = __classLevelPermissions
+    let __classLevelPermissions
+    if (_classLevelPermissions && Object.keys(_classLevelPermissions).length) {
+      __classLevelPermissions = preserveMostRestricted([_classSchema.classLevelPermissions, _classLevelPermissions])
+    } else {
+      __classLevelPermissions = {
+        "find": {
+          "role:admin": true
+        },
+        "count": {
+          "role:admin": true
+        },
+        "get": {
+          "role:admin": true
+        },
+        "create": {
+          "role:admin": true
+        },
+        "update": {
+          "role:admin": true
+        },
+        "delete": {
+          "role:admin": true
+        },
+        "addField": {
+          "role:admin": true
+        },
+        "protectedFields": {
+          "*": []
+        }
+      }
     }
+
+
+    _classSchema.classLevelPermissions = __classLevelPermissions
   } catch (e) {
     console.error(e)
   }

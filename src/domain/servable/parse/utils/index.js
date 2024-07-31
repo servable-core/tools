@@ -133,7 +133,7 @@ export const fetchObject = async ({
 export const destroyRowsWithQuery = async ({ query, limitPerBatch } = {}) => {
   query
     .limit(limitPerBatch)
-    .find()
+    .find({ useMasterKey: true })
     .then(function (results) {
       return Servable.App.Object.destroyAll(results).then(function () {
         return Promise.resolve(results.length);
