@@ -12,6 +12,9 @@ import directoryFilesRecursive from '../../lib/directoryFilesRecursive.js'
 import { FeatureEnum } from '../../manifest/data/1.0.0/enums.js'
 
 import triggerItems from './lib/triggerItems.js'
+import fs from 'fs'
+import fspath from 'path'
+import semver from 'semver'
 
 export default class FeatureLoaderV1_1_0 extends BaseClass {
 
@@ -830,16 +833,50 @@ export default class FeatureLoaderV1_1_0 extends BaseClass {
       return null
     }
 
-    const data = (await directoryGlob({
-      path: `${path}/**/*.js`, globOptions: {
-        mark: true,
-        ignore: ['**/lib/**']
+    let data = {}
+    const items = await fs.promises.readdir(path)
+    if (!items || !items.length) {
+      return null
+    }
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      if (!item) {
+        continue
       }
-    }))
+
+      if (item[0] !== 'v') {
+        continue
+      }
+
+      if (!semver.valid(semver.coerce(item))) {
+        continue
+      }
+      const __path = fspath.join(path, item)
+      const _stat = await fs.promises.stat(__path)
+      if (!_stat) {
+        continue
+      }
+
+      const isDir = _stat.isDirectory()
+      if (!isDir) {
+        continue
+      }
+
+      let _data = (await directoryGlob({
+        path: `${__path}/**/*.js`, globOptions: {
+          mark: true,
+          ignore: ['**/lib/**']
+        }
+      }))
+      data[item] = _data
+    }
+
     return data
   }
 
   async targetRoutes() {
+    //#TODO:
     let path = `${this.path}/target/routes`
     if (!(await checkFileExists(path))) {
       return null
