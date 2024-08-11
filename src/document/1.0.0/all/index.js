@@ -1,16 +1,16 @@
-import buildFeature from './build/feature/index.js'
-import writeFeature from './write/feature/index.js'
+import buildProtocol from './build/protocol/index.js'
+import writeProtocol from './write/protocol/index.js'
 
 
 export default async props => {
   const { path, write = false, includeAuxiliary = true, print = false } = props
-  const item = await buildFeature({ path })
+  const item = await buildProtocol({ path })
   if (print) {
     console.log(item)
   }
 
   if (write) {
-    const written = await writeFeature({ item, path, includeAuxiliary })
+    const written = await writeProtocol({ item, path, includeAuxiliary })
   }
 
   return item

@@ -1,4 +1,4 @@
-import { FeatureEnum, DataTemplateType } from "../../../../../manifest/data/1.0.0/enums.js"
+import { ProtocolEnum, DataTemplateType } from "../../../../../manifest/data/1.0.0/enums.js"
 import access from '../../../../../manifest/access/index.js'
 
 export default async props => {
@@ -6,7 +6,7 @@ export default async props => {
   const payload = []
 
   const target = await access({
-    item: FeatureEnum.Class.Index,
+    item: ProtocolEnum.Class.Index,
     type: DataTemplateType.Class,
     path,
     extraction

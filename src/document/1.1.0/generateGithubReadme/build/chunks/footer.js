@@ -18,7 +18,7 @@ export default async props => {
     h3: 'Servable Registry'
   })
   payload.push({
-    p: 'You can find other Servable  features at the [Servable registry](https://servable.app/)'
+    p: 'You can find other Servable  protocols at the [Servable registry](https://servable.app/)'
   })
 
 

@@ -24,7 +24,7 @@ export default async props => {
   })
 
   payload.push({
-    p: `${id} is available at [servable registry](https://servable.app/feature/${index.data.module.registry.id}).`
+    p: `${id} is available at [servable registry](https://servable.app/protocol/${index.data.module.registry.id}).`
   })
 
   payload.push({
@@ -34,7 +34,7 @@ export default async props => {
   payload.push({
     code: {
       "language": "bash",
-      "content": `yo servable -t usefeature --featureid ${index.data.module.registry.id}`
+      "content": `yo servable -t useprotocol --protocolid ${index.data.module.registry.id}`
     }
   })
 

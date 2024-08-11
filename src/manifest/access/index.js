@@ -8,7 +8,7 @@ export default async ({
   variant,
   mimeType,
   item,
-  type = DataTemplateType.Feature,
+  type = DataTemplateType.Protocol,
   formatData = true,
   extraction: _extraction
 }) => {

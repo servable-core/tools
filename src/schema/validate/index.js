@@ -1,4 +1,4 @@
-import handleFeature from "./handleFeature/index.js"
+import handleProtocol from "./handleProtocol/index.js"
 import semver from 'semver'
 
 export default async ({
@@ -6,13 +6,13 @@ export default async ({
 }) => {
 
   const {
-    features
+    protocols
   } = schema
   const comparisons = []
-  for (var i in features) {
-    const feature = features[i]
-    const comparison = await handleFeature({
-      feature,
+  for (var i in protocols) {
+    const protocol = protocols[i]
+    const comparison = await handleProtocol({
+      protocol,
     })
     comparisons.push(comparison)
   }

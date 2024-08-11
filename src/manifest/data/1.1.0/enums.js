@@ -1,4 +1,4 @@
-export const FeatureEnum = {
+export const ProtocolEnum = {
   Index: {
     id: 'index'
   },
@@ -57,8 +57,8 @@ export const FeatureEnum = {
         id: 'index',
         parents: ['class'],
       },
-      Features: {
-        id: 'features',
+      Protocols: {
+        id: 'protocols',
         parents: ['class']
       },
     },
@@ -166,8 +166,8 @@ export const ClassEnum = {
       id: 'index',
       parents: ['class']
     },
-    Features: {
-      id: 'features',
+    Protocols: {
+      id: 'protocols',
       parents: ['class']
     },
   },
@@ -261,7 +261,7 @@ export const SchemaEnum = {
 }
 
 export const DataTemplateType = {
-  Feature: 'feature',
+  Protocol: 'protocol',
   Class: 'class',
   Schema: 'schema',
 }

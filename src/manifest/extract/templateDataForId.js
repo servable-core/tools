@@ -9,9 +9,9 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 
-export default async ({ id, path: featurePath }) => {
+export default async ({ id, path: protocolPath }) => {
   let version = "1.0.0"
-  let index = await loadIndex(featurePath)
+  let index = await loadIndex(protocolPath)
   if (index && index.apiVersion) {
     version = index.apiVersion
   }
@@ -19,7 +19,7 @@ export default async ({ id, path: featurePath }) => {
   let url = `${basePath}/${version}/${id}.json`
   url = path.resolve(__dirname, url)
   if (!(await checkFileExists(url))) {
-    throw { message: `Could not find template data ${id} at path ${featurePath}` }
+    throw { message: `Could not find template data ${id} at path ${protocolPath}` }
   }
   let data = await importJSONAsync(url)
   return data

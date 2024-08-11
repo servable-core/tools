@@ -80,14 +80,14 @@
                   ]
                 },
                 {
-                  "id": "features",
+                  "id": "protocols",
                   "routes": [
                     {
                       "type": "file",
                       "mimeTypes": [
                         "text/javascript"
                       ],
-                      "path": "features"
+                      "path": "protocols"
                     }
                   ]
                 }

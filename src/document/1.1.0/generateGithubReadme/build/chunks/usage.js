@@ -18,7 +18,7 @@ export default async props => {
   })
 
   payload.push({
-    p: "Add this template to your class' features.json file. Fill the values to fit your needs with the right parameters."
+    p: "Add this template to your class' protocols.json file. Fill the values to fit your needs with the right parameters."
   })
 
   payload.push({

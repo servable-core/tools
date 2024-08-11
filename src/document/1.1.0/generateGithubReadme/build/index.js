@@ -1,17 +1,17 @@
 import gitUrlParse from "git-url-parse"
-import { FeatureEnum } from "../../../../manifest/data/1.0.0/enums.js"
+import { ProtocolEnum } from "../../../../manifest/data/1.0.0/enums.js"
 // import append from "../utils/builder/append.js"
 import access from '../../../../manifest/access/index.js'
-import buildSeed from '../../chunks/build/feature/seed.js'
-import buildFeatureClass from '../../chunks/build/feature/class.js'
-import buildConfig from '../../chunks/build/feature/config.js'
-import buildLiveClasses from '../../chunks/build/feature/liveClasses.js'
-import buildAfterInit from '../../chunks/build/feature/afterInit.js'
-import buildBeforeInit from '../../chunks/build/feature/beforeInit.js'
-import buildFunctions from '../../chunks/build/feature/functions.js'
-import buildSchema from '../../chunks/build/feature/schema.js'
-import buildSystem from '../../chunks/build/feature/system.js'
-import buildLib from '../../chunks/build/feature/lib.js'
+import buildSeed from '../../chunks/build/protocol/seed.js'
+import buildProtocolClass from '../../chunks/build/protocol/class.js'
+import buildConfig from '../../chunks/build/protocol/config.js'
+import buildLiveClasses from '../../chunks/build/protocol/liveClasses.js'
+import buildAfterInit from '../../chunks/build/protocol/afterInit.js'
+import buildBeforeInit from '../../chunks/build/protocol/beforeInit.js'
+import buildFunctions from '../../chunks/build/protocol/functions.js'
+import buildSchema from '../../chunks/build/protocol/schema.js'
+import buildSystem from '../../chunks/build/protocol/system.js'
+import buildLib from '../../chunks/build/protocol/lib.js'
 import buildGithubTags from './chunks/githubTags.js'
 import buildRegistry from './chunks/registry.js'
 import buildInstall from './chunks/install.js'
@@ -19,7 +19,7 @@ import buildUsage from './chunks/usage.js'
 import buildFooter from './chunks/footer.js'
 import buildPackages from './chunks/packages.js'
 import buildDependencies from './chunks/dependencies/index.js'
-import buildTriggers from '../../chunks/build/feature/triggers.js'
+import buildTriggers from '../../chunks/build/protocol/triggers.js'
 import buildAdapters from './chunks/adapters.js'
 import buildApis from './chunks/apis.js'
 import buildCategories from './chunks/categories.js'
@@ -35,7 +35,7 @@ export default async props => {
   let packages
   let version = null
   let index = await access({
-    item: FeatureEnum.Index,
+    item: ProtocolEnum.Index,
     extraction,
     path
   })
@@ -45,7 +45,7 @@ export default async props => {
     mainPackage = index.data.module
     const { name, description, id, } = mainPackage
     version = mainPackage.version
-    payload.push({ h1: `${name} *feature for Servable*` })
+    payload.push({ h1: `${name} *protocol for Servable*` })
     payload.push({ p: `**${id}**` })
 
     npmPackageName = id
@@ -62,9 +62,9 @@ export default async props => {
   payload = payload.concat(chunks.githubTags.payload)
 
   let icon = await access({
-    item: FeatureEnum.Assets.Icon,
-    // variant: FeatureEnum.Assets.Icon.variants.x2,
-    mimeType: FeatureEnum.Assets.Icon.mimeTypes.SVG,
+    item: ProtocolEnum.Assets.Icon,
+    // variant: ProtocolEnum.Assets.Icon.variants.x2,
+    mimeType: ProtocolEnum.Assets.Icon.mimeTypes.SVG,
     extraction,
     path
   })
@@ -81,9 +81,9 @@ export default async props => {
   }
   else {
     icon = await access({
-      item: FeatureEnum.Assets.Icon,
-      variant: FeatureEnum.Assets.Icon.variants.x2,
-      mimeType: FeatureEnum.Assets.Icon.mimeTypes.PNG,
+      item: ProtocolEnum.Assets.Icon,
+      variant: ProtocolEnum.Assets.Icon.variants.x2,
+      mimeType: ProtocolEnum.Assets.Icon.mimeTypes.PNG,
       extraction,
       path
     })
@@ -168,9 +168,9 @@ export default async props => {
 
 
 
-  chunks.featureClass = await buildFeatureClass({ path })
-  payload.push({ h2: chunks.featureClass.name })
-  payload = payload.concat(chunks.featureClass.payload)
+  chunks.protocolClass = await buildProtocolClass({ path })
+  payload.push({ h2: chunks.protocolClass.name })
+  payload = payload.concat(chunks.protocolClass.payload)
 
   chunks.beforeInit = await buildBeforeInit({ path })
   payload.push({ h2: chunks.beforeInit.name })

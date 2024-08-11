@@ -1,4 +1,4 @@
-import featureApiVersion from '../../../lib/featureApiVersion.js'
+import protocolApiVersion from '../../../lib/protocolApiVersion.js'
 import _path from "path"
 import { fileURLToPath } from "url"
 import { dirname } from "path"
@@ -8,7 +8,7 @@ const __dirname = dirname(__filename)
 
 export default async props => {
   const { path, } = props
-  const apiVersion = await featureApiVersion({ path })
+  const apiVersion = await protocolApiVersion({ path })
   if (!apiVersion) {
     throw new Error('No api version found')
   }

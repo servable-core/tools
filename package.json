@@ -4,7 +4,7 @@
   "source": "src/index.js",
   "main": "src/index.js",
   "version": "0.0.0-development",
-  "description": "Servable tools is a utility that builds a feature's manifest and documents it.",
+  "description": "Servable tools is a utility that builds a protocol's manifest and documents it.",
   "author": "Servable Community",
   "license": "ISC",
   "bugs": {

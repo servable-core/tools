@@ -1,4 +1,4 @@
-import { FeatureEnum } from "../../../../../manifest/data/1.0.0/enums.js"
+import { ProtocolEnum } from "../../../../../manifest/data/1.0.0/enums.js"
 import access from '../../../../../manifest/access/index.js'
 
 export default async props => {
@@ -8,7 +8,7 @@ export default async props => {
   let npmPackageName = null
 
   let index = await access({
-    item: FeatureEnum.Index,
+    item: ProtocolEnum.Index,
     extraction,
     path
   })
@@ -19,7 +19,7 @@ export default async props => {
   }
 
   const target = await access({
-    item: FeatureEnum.AfterInit,
+    item: ProtocolEnum.AfterInit,
     path,
     extraction
   })

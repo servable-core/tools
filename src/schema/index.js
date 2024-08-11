@@ -1,56 +1,56 @@
-import featureFactory from "../domain/feature/factory/index.js"
-import getFeaturesLiveClasses from "./lib/getFeaturesLiveClasses.js"
+import protocolFactory from "../domain/protocol/factory/index.js"
+import getProtocolsLiveClasses from "./build/lib/getProtocolsLiveClasses.js"
 import adaptConfigBasic from "../lib/adaptConfig/basic.js"
-import extractFeature from './extractFeature/index.js'
-import updateFeaturesExcerpt from './lib/updateFeaturesExcerpt.js'
+import extractProtocol from './extractProtocol/index.js'
+import updateProtocolsExcerpt from './build/lib/updateProtocolsExcerpt.js'
 
 export default async ({ servableConfig }) => {
-  const { rootFeaturePayload } = servableConfig
+  const { rootProtocolPayload } = servableConfig
   adaptConfigBasic({ servableConfig, live: false })
-  const featuresCache = []
-  const appFeature = await featureFactory({
-    featurePayload: {
-      id: rootFeaturePayload.id,
-      type: rootFeaturePayload.type,
-      path: rootFeaturePayload.path,
-      version: rootFeaturePayload.version
+  const protocolsCache = []
+  const appProtocol = await protocolFactory({
+    protocolPayload: {
+      id: rootProtocolPayload.id,
+      type: rootProtocolPayload.type,
+      path: rootProtocolPayload.path,
+      version: rootProtocolPayload.version
     },
     servableConfig,
-    featuresCache,
+    protocolsCache,
     instancesPathId: [
-      { type: 'feature', value: { id: 'app' } }
+      { type: 'protocol', value: { id: 'app' } }
     ],
   })
 
-  const featuresExcerpt = {}
-  const features = await extractFeature({
-    feature: appFeature,
-    featureFactory: async ({
-      featurePayload,
+  const protocolsExcerpt = {}
+  const protocols = await extractProtocol({
+    protocol: appProtocol,
+    protocolFactory: async ({
+      protocolPayload,
       instancesPathId
     }) =>
-      featureFactory({
-        featurePayload,
+      protocolFactory({
+        protocolPayload,
         servableConfig,
-        featuresCache,
+        protocolsCache,
         instancesPathId
       }),
-    updateFeaturesExcerpt: async ({ adaptedClassesStructs }) =>
-      updateFeaturesExcerpt({
+    updateProtocolsExcerpt: async ({ adaptedClassesStructs }) =>
+      updateProtocolsExcerpt({
         adaptedClassesStructs,
-        featuresExcerpt
+        protocolsExcerpt
       }),
     instancesPathId: [
-      { type: 'feature', value: { id: 'app' } }
+      { type: 'protocol', value: { id: 'app' } }
     ],
   })
 
-  const liveClasses = await getFeaturesLiveClasses({ features })
+  const liveClasses = await getProtocolsLiveClasses({ protocols })
 
   return {
-    features,
-    featuresExcerpt,
-    appFeature,
+    protocols,
+    protocolsExcerpt,
+    appProtocol,
     liveClasses
   }
 }

@@ -11,7 +11,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-Servable tools is a utility that builds a feature's manifest, documents it and build scehma.
+Servable tools is a utility that builds a protocol's manifest, documents it and build scehma.
 
 ## Documentation
 You can find here the complete [servable documentation](https://docs.servable.app/) with guides and api reference.

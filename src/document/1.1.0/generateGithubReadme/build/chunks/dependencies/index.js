@@ -10,7 +10,7 @@ export default async props => {
 
   if ((!dependencies || !dependencies.length)) {
     payload.push({
-      p: 'This feature has no feature dependencies.'
+      p: 'This protocol has no protocol dependencies.'
     })
     return { payload, name: 'Dependencies', id: 'dependencies', }
   }
@@ -20,7 +20,7 @@ export default async props => {
   if ((!managed || !managed.length)
     && (!target || !target.length)) {
     payload.push({
-      p: 'This feature has no feature dependencies.'
+      p: 'This protocol has no protocol dependencies.'
     })
     return { payload, name: 'Dependencies', id: 'dependencies', }
   }

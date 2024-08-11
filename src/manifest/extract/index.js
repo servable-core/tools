@@ -5,7 +5,7 @@ import ServableClass from "../../domain/servable/index.js"
 
 export default async ({
   path,
-  dataTemplateType = DataTemplateType.Feature
+  dataTemplateType = DataTemplateType.Protocol
 }) => {
   const reference = {}
   if (!global.Servable) {
