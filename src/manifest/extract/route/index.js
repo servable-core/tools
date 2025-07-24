@@ -96,7 +96,7 @@ export default async (props) => {
       }
     }
   } catch (e) {
-    console.error('[SERVABLE]', 'performRoute', item, e)
+    console.error('[SERVABLE]', 'performRoute', JSON.stringify(item), item, route, e)
   }
   return result
 }
