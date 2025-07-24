@@ -86,7 +86,6 @@ export default async (props) => {
       default: break
     }
 
-
     result.leafPath = `${sanitizePath(result.leafPath)}`
 
     if (files && files.length) {
@@ -96,7 +95,7 @@ export default async (props) => {
       }
     }
   } catch (e) {
-    console.error('[SERVABLE]', 'performRoute', JSON.stringify(item), item, route, e)
+    console.error('[SERVABLE]', 'performRoute', JSON.stringify(item), parentLeafPath, route, e)
   }
   return result
 }
