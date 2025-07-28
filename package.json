@@ -80,7 +80,7 @@
     "parse-comments": "^1.0.0",
     "path-sanitizer": "^2.0.0",
     "semver": "^7.5.4",
-    "sharp": "0.30.7",
+    "jimp": "^1.6.0",
     "underscore": "^1.13.3"
   },
   "devDependencies": {
