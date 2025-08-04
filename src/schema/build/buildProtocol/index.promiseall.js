@@ -32,8 +32,8 @@ const perform = async ({
   let adaptedClassesStructs = []
   let classesProtocols = []
 
-  for (var i in classesSchemas) {
-    const classSchema = classesSchemas[i]
+  await Promise.all(classesSchemas.map(async classSchema => {
+    // const classSchema = classesSchemas[i]
     const adaptedClassStruct = await classStruct({
       protocol,
       classSchema,
@@ -47,7 +47,7 @@ const perform = async ({
 
     let { protocolsPayloads } = adaptedClassStruct
     if (!protocolsPayloads || !protocolsPayloads.length) {
-      continue
+      return
     }
 
     protocolsPayloads = protocolsPayloads.filter(a => (a && a.id !== protocol.id))
@@ -68,7 +68,7 @@ const perform = async ({
       extractProtocol: perform
     })
     classesProtocols = classesProtocols.concat(classProtocols)
-  }
+  }))
 
   await updateProtocolsExcerpt({ adaptedClassesStructs })
   let ownClasses = adaptedClassesStructs.map(i => i.classSchema).filter(a => a)
