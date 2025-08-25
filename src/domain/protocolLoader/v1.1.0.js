@@ -301,6 +301,11 @@ export default class ProtocolLoaderV1_1_0 extends BaseClass {
     return main ? main.beforeInit : null
   }
 
+  async beforeEnd() {
+    const main = await this.main()
+    return main ? main.beforeEnd : null
+  }
+
   async main() {
 
     const path = `${this.path}/main.js`

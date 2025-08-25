@@ -316,6 +316,20 @@ export default class ProtocolLoaderV1_0_0 extends BaseClass {
     return this._importJSDefault({ path, })
   }
 
+  async beforeEnd() {
+    const cacheKey = 'beforeEnd'
+    if (this._valueInCache(cacheKey)) {
+      return this._valueInCache(cacheKey)
+    }
+
+    const path = `${this.path}/beforeEnd/index.js`
+    if (!(await checkFileExists(path))) {
+      return null
+    }
+
+    return this._importJSDefault({ path, })
+  }
+
   configFolder() {
     return `${this.path}/config`
   }
