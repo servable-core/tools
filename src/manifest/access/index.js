@@ -15,7 +15,7 @@ export default async ({
 
   let extraction = _extraction
   if (!extraction && path) {
-    extraction = await extract({ path: `${sanitizePath(path)}`, dataTemplateType: type })
+    extraction = await extract({ path: `${sanitizePath.default(path)}`, dataTemplateType: type })
   }
 
   if (!extraction) {

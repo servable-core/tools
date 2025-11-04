@@ -18,9 +18,9 @@ export default async (props) => {
   const extensionType = mime.getExtension(mimeType)
 
   let documentation = null
-  let md = `${sanitizePath(`${props.fullPath}.md`)}`
+  let md = `${sanitizePath.default(`${props.fullPath}.md`)}`
   if (!(await checkFileExists(md))) {
-    md = `${sanitizePath(`${props.fullPath}.mdx`)}`
+    md = `${sanitizePath.default(`${props.fullPath}.mdx`)}`
   }
 
   if (await checkFileExists(md)) {

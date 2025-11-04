@@ -43,7 +43,7 @@ export default class ProtocolLoader {
   async loadExtraction({ servableConfig } = {}) {
     try {
       this.extraction = await extract({
-        path: `${sanitizePath(this.path)}`,
+        path: `${sanitizePath.default(this.path)}`,
         dataTemplateType: DataTemplateType.Protocol
       })
       // const e = JSON.stringify(this.extraction)

@@ -10,7 +10,7 @@ export default async ({ chunk, path, includeAuxiliary }) => {
     auxiliary
   } = chunk
 
-  const chunkPath = `/${sanitizePath(`${path}/${id}.md`)}`
+  const chunkPath = `/${sanitizePath.default(`${path}/${id}.md`)}`
   let text = json2md([{ h1: name }, ...payload])
   if (includeAuxiliary && auxiliary) {
     text = `${text}\n${auxiliary}`

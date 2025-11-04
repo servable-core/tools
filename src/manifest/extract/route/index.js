@@ -13,7 +13,7 @@ export default async (props) => {
     params = {}
   } = route
 
-  let fullPath = `${sanitizePath(`${parentLeafPath}/${route.path}`)}`
+  let fullPath = `${sanitizePath.default(`${parentLeafPath}/${route.path}`)}`
   let files = null
   const result = {
     ...route,
@@ -86,7 +86,7 @@ export default async (props) => {
       default: break
     }
 
-    result.leafPath = `${sanitizePath(result.leafPath)}`
+    result.leafPath = `${sanitizePath.default(result.leafPath)}`
 
     if (files && files.length) {
       files = files.filter(a => a.module)

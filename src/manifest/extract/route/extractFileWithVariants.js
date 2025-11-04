@@ -30,9 +30,9 @@ export default async (props) => {
 
 const fullPathForVariant = ({ variant, fullPath, extensionType }) => {
   if (!variant) {
-    return `${sanitizePath(`${fullPath}.${extensionType}`)}`
+    return `${sanitizePath.default(`${fullPath}.${extensionType}`)}`
   }
 
-  // return `/${sanitizePath(`${fullPath}${variant.trim()}.${extensionType}`)}`
+  // return `/${sanitizePath.default(`${fullPath}${variant.trim()}.${extensionType}`)}`
   return `${fullPath}${variant.trim()}.${extensionType}`
 }

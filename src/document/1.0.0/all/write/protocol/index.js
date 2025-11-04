@@ -12,7 +12,7 @@ export default async ({ item, path, includeAuxiliary }) => {
     classes,
   } = item
 
-  const rootPath = sanitizePath(`${path}/documentation/generated`)
+  const rootPath = sanitizePath.default(`${path}/documentation/generated`)
 
   if ((await checkFileExists(rootPath))) {
     await fse.emptyDir(rootPath)
