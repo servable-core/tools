@@ -1,6 +1,6 @@
 import checkFileExists from "../../../lib/checkFileExists.js"
 import importJSONAsync from "../../../lib/importJSONAsync.js"
-import sanitizePath from '../../../lib/sanitizePath.js'
+import sanitizePath from '../../../lib/sanitize.js'
 import fs from "fs"
 import fse from 'fs-extra'
 import imageToBase64 from './imageToBase64.js'
@@ -18,9 +18,9 @@ export default async (props) => {
   const extensionType = mime.getExtension(mimeType)
 
   let documentation = null
-  let md = `${sanitizePath.default(`${props.fullPath}.md`)}`
+  let md = `${sanitizePath(`${props.fullPath}.md`)}`
   if (!(await checkFileExists(md))) {
-    md = `${sanitizePath.default(`${props.fullPath}.mdx`)}`
+    md = `${sanitizePath(`${props.fullPath}.mdx`)}`
   }
 
   if (await checkFileExists(md)) {

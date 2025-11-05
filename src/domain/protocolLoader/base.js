@@ -1,6 +1,6 @@
 import extract from '../../manifest/extract/index.js'
 import { DataTemplateType, ProtocolEnum } from '../../manifest/data/1.0.0/enums.js'
-import sanitizePath from '../../lib/sanitizePath.js'
+import sanitizePath from '../../lib/sanitize.js'
 import importJSDefault from './lib/importJSDefault.js'
 import importJSONDefault from './lib/importJSONDefault.js'
 import access from '../../manifest/access/index.js'
@@ -43,7 +43,7 @@ export default class ProtocolLoader {
   async loadExtraction({ servableConfig } = {}) {
     try {
       this.extraction = await extract({
-        path: `${sanitizePath.default(this.path)}`,
+        path: `${sanitizePath(this.path)}`,
         dataTemplateType: DataTemplateType.Protocol
       })
       // const e = JSON.stringify(this.extraction)

@@ -1,6 +1,6 @@
 import extract from '../extract/index.js'
 import accessChildInTreeWithRoute from './accessChildInTreeWithRoute.js'
-import sanitizePath from '../../lib/sanitizePath.js'
+import sanitizePath from '../../lib/sanitize.js'
 import { DataTemplateType } from '../data/1.0.0/enums.js'
 
 export default async ({
@@ -15,7 +15,7 @@ export default async ({
 
   let extraction = _extraction
   if (!extraction && path) {
-    extraction = await extract({ path: `${sanitizePath.default(path)}`, dataTemplateType: type })
+    extraction = await extract({ path: `${sanitizePath(path)}`, dataTemplateType: type })
   }
 
   if (!extraction) {

@@ -3,7 +3,7 @@ import directoryFilesRecursive from '../../../lib/directoryFilesRecursive.js'
 import formatFile from '../formatFile.js'
 import foldersInFolder from '../../../lib/foldersInFolder.js'
 import extractFiles from './extractFiles.js'
-import sanitizePath from '../../../lib/sanitizePath.js'
+import sanitizePath from '../../../lib/sanitize.js'
 
 export default async (props) => {
   const { item, route, parentLeafPath } = props
@@ -13,7 +13,7 @@ export default async (props) => {
     params = {}
   } = route
 
-  let fullPath = `${sanitizePath.default(`${parentLeafPath}/${route.path}`)}`
+  let fullPath = `${sanitizePath(`${parentLeafPath}/${route.path}`)}`
   let files = null
   const result = {
     ...route,
@@ -86,7 +86,7 @@ export default async (props) => {
       default: break
     }
 
-    result.leafPath = `${sanitizePath.default(result.leafPath)}`
+    result.leafPath = `${sanitizePath(result.leafPath)}`
 
     if (files && files.length) {
       files = files.filter(a => a.module)
