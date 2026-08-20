@@ -39,7 +39,7 @@ export default class ProtocolInstance {
     this._protocolPayload = { ...protocolPayload }
     this._instancesPathId = [...instancesPathId]
     this._instancesPathIdString = instancesPathIdUniqueId({ instancesPathId, currentProtocolId: this._id })
-    console.log(this._instancesPathIdString)
+    console.log("[@servable/tools/domain/protocolInstance] constructor() → Protocol instance initialized with ID:", this._id, "Unique path ID:", this._instancesPathIdString)
   }
 
   async load({ servableConfig } = {}) {

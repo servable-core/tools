@@ -15,7 +15,7 @@ const perform = async ({
 
   //#TODO: protocol.loader
   if (!(await protocol.loader.isValid())) {
-    console.log('protocol not valid', protocol.id, protocol.loader.path)
+    console.log("[@servable/tools/schema/build/buildProtocol] perform() → Protocol validation failed - Protocol ID:", protocol.id, "Path:", protocol.loader.path)
     return defaultResult
   }
 

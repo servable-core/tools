@@ -18,7 +18,7 @@ export default async props => {
     throw new Error('No module found for api version')
   }
 
-  console.log('EZZEZEZEZEZE', apiVersion)
+  console.log("[@servable/tools/document/gateway/generateGithubReadme] default() → Loading GitHub README generator for API version:", apiVersion, "Module path:", modulePath)
   const module = (await import(modulePath)).default
   return module(props)
 }

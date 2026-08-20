@@ -9,7 +9,6 @@ import directoryGlob from '../../lib/directoryGlob.js'
 
 import checkFileExists from '../../lib/checkFileExists.js'
 import directoryFilesRecursive from '../../lib/directoryFilesRecursive.js'
-import { ProtocolEnum } from '../../manifest/data/1.0.0/enums.js'
 
 import triggerItems from './lib/triggerItems.js'
 import fs from 'fs'
@@ -557,14 +556,14 @@ export default class ProtocolLoaderV1_1_0 extends BaseClass {
   }
 
   async schemaRaw(props = {}) {
-    const { ad } = props
-    const a = await this._accessManifestItem({
-      item: ProtocolEnum.Schema,
-    })
-    // const cacheKey = 'schemaIndexes'
-    // if (this.valueInCache(cacheKey)) {
-    //     return this.valueInCache(cacheKey)
-    // }
+    // schemaFields()/schemaIndexes()/schemaClassLevelPermissions() each call
+    // this independently for every protocol attached to every class, so
+    // without caching the same schema/<version>/index.json gets read and
+    // JSON.parse'd up to 3x per class-protocol edge across the whole build.
+    const cacheKey = 'schemaRaw'
+    if (this._valueInCache(cacheKey)) {
+      return this._valueInCache(cacheKey)
+    }
 
     const schemaPath = await this._schemaPath()
 
@@ -585,6 +584,7 @@ export default class ProtocolLoaderV1_1_0 extends BaseClass {
     }
 
     const b = await this._importJSONDefault({ path, })
+    this.cache[cacheKey] = b
     return b
   }
 
