@@ -23,3 +23,6 @@ package.dist.json
 .npmrc
 dist
 _archive
+
+# local Claude Code settings - not meant to be shared via this public repo
+.claude/

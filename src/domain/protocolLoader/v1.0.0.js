@@ -1,6 +1,5 @@
 import BaseClass from './base.js'
 
-import directories from '../../lib/directories.js'
 import cleanProtocols from '../../lib/cleanProtocols.js'
 import mergeClassProtocols from './lib/mergeClassProtocols.js'
 
@@ -9,7 +8,6 @@ import directoryGlob from '../../lib/directoryGlob.js'
 
 import checkFileExists from '../../lib/checkFileExists.js'
 import directoryFilesRecursive from '../../lib/directoryFilesRecursive.js'
-import { ProtocolEnum } from '../../manifest/data/1.0.0/enums.js'
 
 import triggerItems from './lib/triggerItems.js'
 import fs from 'fs'
@@ -499,193 +497,59 @@ export default class ProtocolLoaderV1_0_0 extends BaseClass {
 
 
   //#region schema
+  // unischema: a protocol's schema is one flat, unversioned file at its root -
+  // `${this.path}/schema.json` - see v1.1.0.js's identical region for the full rationale and
+  // .docs/technical/unischema-plan.md for the wider context.
 
   async classesSchemas(props) {
-    // if (this.valueInCache('classes')) {
-    //     return this.valueInCache('classes')
-    // }
-
     const schema = await this.schemaRaw(props)
     if (schema && schema.managed) {
       return schema.managed.classes
     }
-
-    const schemaPath = await this._schemaPath()
-    let path = `${schemaPath}/classes.js`
-
-    if ((await checkFileExists(path))) {
-      const classes = await (await import(path)).default({ protocol: this.protocolInstance })
-      // this.cache['classes'] = classes
-      return classes
-    }
-
-    path = `${schemaPath}/classes.json`
-    if (!(await checkFileExists(path))) {
-      return []
-    }
-
-    const classes = await importJSONAsync(path)
-    // this.cache['classes'] = classes
-    return classes
+    return []
   }
 
   async schemaFields(props) {
-    // const cacheKey = 'schemaFields'
-    // if (this.valueInCache(cacheKey)) {
-    //     return this.valueInCache(cacheKey)
-    // }
     const schema = await this.schemaRaw(props)
     if (schema && schema.target) {
       return schema.target.fields
     }
-
-    const schemaPath = await this._schemaPath()
-    const path = `${schemaPath}/fields.json`
-    if (!(await checkFileExists(path))) {
-      return null
-    }
-
-    return this._importJSONDefault({ path, })
+    return null
   }
 
   async schemaIndexes(props) {
-    // const cacheKey = 'schemaIndexes'
-    // if (this.valueInCache(cacheKey)) {
-    //     return this.valueInCache(cacheKey)
-    // }
     const schema = await this.schemaRaw(props)
     if (schema && schema.target) {
       return schema.target.indexes
     }
-
-    const schemaPath = await this._schemaPath()
-    const path = `${schemaPath}/indexes.json`
-
-    if (!(await checkFileExists(path))) {
-      return null
-    }
-
-    return this._importJSONDefault({ path, })
+    return null
   }
 
   async schemaRaw(props = {}) {
-    const { ad } = props
-    const a = await this._accessManifestItem({
-      item: ProtocolEnum.Schema,
-    })
-    // const cacheKey = 'schemaIndexes'
-    // if (this.valueInCache(cacheKey)) {
-    //     return this.valueInCache(cacheKey)
-    // }
+    // Memoized for the same reason v1.1.0.js's does - schemaFields()/schemaIndexes()/
+    // schemaClassLevelPermissions() each call this independently for every protocol attached to
+    // every class.
+    const cacheKey = 'schemaRaw'
+    if (this._valueInCache(cacheKey)) {
+      return this._valueInCache(cacheKey)
+    }
 
-    const schemaPath = await this._schemaPath()
-
-    //#TODO: A dynamic schema needs protocols to be instantiated per class as to avoid class defintion collusions and edge case.
-    // let path = `${schemaPath}/index.js`
-
-    // if ((await checkFileExists(path))) {
-    //     let data = (await import(path)).default
-    //     //#TODO: don't use up protocol params
-    //     data = await data({ ...props, params: this.protocolInstance.params })
-    //     return data
-    // }
-
-    let path = `${schemaPath}/index.json`
-
+    const path = `${this.path}/schema.json`
     if (!(await checkFileExists(path))) {
       return null
     }
 
     const b = await this._importJSONDefault({ path, })
+    this.cache[cacheKey] = b
     return b
   }
 
   async schemaClassLevelPermissions(props) {
-    // const cacheKey = 'schemaClassLevelPermissions'
-    // if (this.valueInCache(cacheKey)) {
-    //     return this.valueInCache(cacheKey)
-    // }
-
     const schema = await this.schemaRaw(props)
     if (schema && schema.target) {
       return schema.target.classLevelPermissions
     }
-
-    const schemaPath = await this._schemaPath()
-    const path = `${schemaPath}/classlevelpermissions.json`
-
-    if (!(await checkFileExists(path))) {
-      return null
-    }
-
-    return this._importJSONDefault({ path, })
-  }
-
-  async _schemaPath() {
-    //let version = this.currentProtocolVersion ? this.currentProtocolVersion : this.protocolInstanceVersion
-    let version = this.protocolInstance.version
-    let versions = await this.schemaVersions()
-
-    if (!version) {
-      return `${this.path}/schema`
-    }
-
-    if (!versions
-      || !versions.length) {
-      return `${this.path}/schema`
-    }
-
-    if (versions
-      && versions.length
-      && !versions.includes(version)) {
-      return `${this.path}/schema`
-    }
-
-    if (versions
-      && versions.length
-      && version === 'latest') {
-      version = versions[versions.length - 1] //#TODO: sort by semver
-    }
-
-    const path = `${this.path}/schema/${version}`
-    return path
-  }
-
-
-  async schemaVersions() {
-    const cacheKey = '_schemaVersions'
-    if (this._valueInCache(cacheKey)) {
-      return this._valueInCache(cacheKey)
-    }
-    const items = await directories({ path: `${this.path}/schema` })
-    if (!items || !items.length) {
-      return null
-    }
-    let data = items.map(i => i.name)
-    data = data.sort()
-    this.cache[cacheKey] = data
-    return data
-  }
-
-  async schemaVersionOf({ version, subPath }) {
-    const cacheKey = `_schemaVersionOf${subPath}`
-    if (this._valueInCache(cacheKey)) {
-      return this._valueInCache(cacheKey)
-    }
-
-    const versions = await this.schemaVersions()
-    if (!versions || !versions.includes(version)) {
-      return null
-    }
-
-    const path = `${this.path}/schema/${version}/migration/${subPath}/index.js`
-    if (!(await checkFileExists(path))) {
-      return null
-    }
-
-    const data = await import(path)
-    this.cache[cacheKey] = data
-    return data
+    return null
   }
 
   //#endregion

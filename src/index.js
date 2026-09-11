@@ -5,6 +5,8 @@ import * as ManifestEnumsV1_1_0 from './manifest/data/1.0.0/enums.js'
 
 import buildSchema from './schema/build/index.js'
 import validateSchema from './schema/validate/index.js'
+import compileArtifact, { hashOf as artifactHashOf, normalizeArtifact } from './schema/artifact/index.js'
+import plan from './schema/plan/index.js'
 // import validateProtocol from './lib/config/validate/protocol/index.js'
 import cleanProtocols from './lib/cleanProtocols.js'
 
@@ -23,6 +25,10 @@ export {
   ManifestEnumsV1_1_0,
   buildSchema,
   validateSchema,
+  compileArtifact,
+  artifactHashOf,
+  normalizeArtifact,
+  plan,
   cleanProtocols,
   generateGithubReadme,
   Domain
