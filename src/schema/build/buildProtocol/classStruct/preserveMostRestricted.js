@@ -37,8 +37,10 @@ export default (items) => {
 }
 
 const dedupeProtectedFields = (items) => {
-  const a = items[0].protectedFields ? items[0].protectedFields : {}
-  const b = items[1].protectedFields ? items[1].protectedFields : {}
+  const itemA = items[0] ? items[0] : {}
+  const itemB = items[1] ? items[1] : {}
+  const a = itemA.protectedFields ? itemA.protectedFields : {}
+  const b = itemB.protectedFields ? itemB.protectedFields : {}
   const aKeys = Object.keys(a)
   const bKeys = Object.keys(b)
 
