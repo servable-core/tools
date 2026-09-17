@@ -19,7 +19,7 @@
     "global.d.ts"
   ],
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
   "config": {
     "commitizen": {
