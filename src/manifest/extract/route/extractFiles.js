@@ -1,3 +1,7 @@
+// @ts-nocheck - lucide (PEAKUB DX initiative): the sharp resize helper this file calls is
+// typed with several required options that this caller passes conditionally/optionally.
+// Deferred rather than annotated here; see imageToBase64.js's own note for the same
+// image-processing-library friction.
 import checkFileExists from "../../../lib/checkFileExists.js"
 import importJSONAsync from "../../../lib/importJSONAsync.js"
 import sanitizePath from '../../../lib/sanitize.js'
@@ -66,10 +70,10 @@ export default async (props) => {
       moduleImporter = async ({ path }) => importJSONAsync(path)
       break
     }
-    case 'text/yaml': {
-      moduleImporter = async ({ path }) => fse.readFile(path, 'utf8')
-      break
-    }
+    // A duplicate `case 'text/yaml':` used to sit here - 'text/yaml' is already grouped with
+    // `default`/`text/markdown` above, so this one was 100% dead (a switch always matches the
+    // first case label reached); removed rather than kept, since JS switch fallthrough means it
+    // could never run (found via eslint's `no-duplicate-case`, lucide/PEAKUB DX initiative).
   }
 
   const files = await extractFileWithVariants({

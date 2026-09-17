@@ -9,7 +9,9 @@ export const getWithCache = async ({
   instances,
 }) => {
 
-  const { id, module, version, path } = protocolPayload
+  // `id`/`module`/`version` (also destructured here previously) were never read anywhere in
+  // this function - trimmed (found via eslint's `no-unused-vars`, lucide/PEAKUB DX initiative).
+  const { path } = protocolPayload
 
   if (!instancesPathId || !instancesPathId.length) {
     return null
@@ -19,12 +21,14 @@ export const getWithCache = async ({
   let { type, value: { className } } = instancePathOfInterest
 
   switch (type) {
-    case 'class': {
-    } break
+    // No override needed: `className` is already correct from the destructure above.
+    case 'class':
+      break
     case 'protocol': {
       if (instancePathOfInterest.value.id === 'app') {
         className = '_root'
-      } break
+      }
+      break
     }
     default: {
       return null

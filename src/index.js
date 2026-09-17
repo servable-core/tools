@@ -7,12 +7,16 @@ import buildSchema from './schema/build/index.js'
 import validateSchema from './schema/validate/index.js'
 import compileArtifact, { hashOf as artifactHashOf, normalizeArtifact } from './schema/artifact/index.js'
 import plan from './schema/plan/index.js'
+import generateSchemaTypes from './schema/types/index.js'
+import buildProtocolResources from './schema/protocolResources/index.js'
+import generateProtocolResourceTypes from './schema/protocolResources/generateTypes.js'
 // import validateProtocol from './lib/config/validate/protocol/index.js'
 import cleanProtocols from './lib/cleanProtocols.js'
 
 
 import documentProtocol from './document/gateway/all/index.js'
 import generateGithubReadme from './document/gateway/generateGithubReadme/index.js'
+import defineConfig from './lib/defineConfig.js'
 
 import Servable from './domain/servable/index.js'
 const Domain = { Servable }
@@ -29,7 +33,11 @@ export {
   artifactHashOf,
   normalizeArtifact,
   plan,
+  generateSchemaTypes,
+  buildProtocolResources,
+  generateProtocolResourceTypes,
   cleanProtocols,
   generateGithubReadme,
+  defineConfig,
   Domain
 }

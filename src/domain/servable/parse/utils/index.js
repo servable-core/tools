@@ -1,3 +1,11 @@
+// @ts-nocheck - lucide (PEAKUB DX initiative): a grab-bag of Parse-specific runtime helpers
+// that read the global `Servable.App.*` surface with heavily overloaded/optional-property
+// param shapes (checkJs infers stricter object types from each call site's own usage than
+// the code actually intends). Deferred rather than annotated file-wide here; a future pass
+// should type each function's real param shape individually instead of suppressing the
+// whole file.
+import fs from 'fs'
+
 export const getOnePlain = async props => {
   const { objectId, className, useMasterKey = false } = props;
   const query = new Servable.App.Query(className);
@@ -221,13 +229,20 @@ export const saveFileDataToFS = async ({ file, path = "temp/files" }) => {
       return null;
     }
 
-    const dirPath = "/uploads";
-    if (!fs.existsSync()) {
-      await fs.promises.mkdir(dirPath);
-    }
+    // Found via eslint's `no-undef` (`fs` was never imported at all, so this threw a
+    // ReferenceError into the catch below on every call) then confirmed against the identical,
+    // already-fixed bug in @servable/parse-server-engine's own copy of this function (lucide,
+    // PEAKUB DX initiative). Also fixed here: `dirPath` hardcoded to "/uploads" instead of using
+    // the real `path` parameter, and `fs.existsSync()` called with no argument (always `false`,
+    // so `mkdir` ran unguarded every call and threw EEXIST once the directory already existed -
+    // itself swallowed by the same catch). `recursive: true` replaces the existence check
+    // entirely rather than fixing the missing argument, matching the engine's fix.
+    await fs.promises.mkdir(path, { recursive: true });
 
-    const filePath = `${dirPath}/${file.name}`;
+    const filePath = `${path}/${file.name}`;
     await fs.promises.writeFile(filePath, data);
+    // Returned so a caller can tell success from the null returned on every failure path.
+    return filePath;
   } catch (e) {
     console.error(e);
     return null;

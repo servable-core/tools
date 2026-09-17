@@ -19,7 +19,6 @@ export default async ({
 
   const problematic = comparisons.filter(a => {
     const {
-      highestVersion,
       lowestCompatibleVersion,
       lowestVersion
     } = a

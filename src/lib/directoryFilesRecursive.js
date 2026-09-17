@@ -33,7 +33,15 @@ const perform = async ({ path,
 
       const isDir = _stat.isDirectory()
       if (isDir) {
-        return perform({ path: __path })
+        // Was `perform({ path: __path })` - dropped `includeMeta`/`excludes`/`includeExtensions`
+        // on every recursive descent, silently resetting them to their defaults for anything in
+        // a subdirectory. With `includeMeta: true` that meant a nested file's entry came back as
+        // the bare imported module (no `{ module, path, documentation }` wrapper) - indistinguishable
+        // in shape from a caller reading `.module`/`.path` off it, which would just see
+        // `undefined` rather than an error (found via a real fixture test in
+        // @servable/tools' buildProtocolResources(), lucide/PEAKUB DX initiative - protocols
+        // really do nest resources in subdirectories, e.g. services/payout/finak/request.js).
+        return perform({ path: __path, includeMeta, excludes, includeExtensions })
       }
 
       if (!(await checkFileExists(__path))) {

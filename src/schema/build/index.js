@@ -6,7 +6,10 @@ import updateProtocolsExcerpt from './lib/updateProtocolsExcerpt.js'
 
 export default async ({ servableConfig }) => {
   const { rootProtocolPayload } = servableConfig
-  adaptConfigBasic({ servableConfig, live: false })
+  // adaptConfigBasic() only ever reads `servableConfig` - it has no `live` parameter (that
+  // flag belongs to @servable/server's own, unrelated adaptConfig() wrapper). Passing it
+  // here was inert; removed rather than kept as a misleading no-op argument.
+  adaptConfigBasic({ servableConfig })
   const protocolsCache = []
   const appProtocol = await protocolFactory({
     protocolPayload: {

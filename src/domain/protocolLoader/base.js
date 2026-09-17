@@ -40,6 +40,12 @@ export default class ProtocolLoader {
 
 
 
+  /**
+   * @param {object} [props]
+   * @param {object} [props.servableConfig] - currently unused by this base
+   *   implementation; accepted for interface parity with the loader subclasses that do
+   *   read it (e.g. version resolution).
+   */
   async loadExtraction({ servableConfig } = {}) {
     try {
       this.extraction = await extract({
@@ -88,10 +94,23 @@ export default class ProtocolLoader {
     return mo.data.module
   }
 
+  /**
+   * @param {object} props
+   * @param {string} props.path
+   * @param {string} [props.cacheKey] - most callers omit this. Note:
+   *   `importJSDefault`/`importJSONDefault` currently accept `cache`/`cacheKey` but never
+   *   read them - every call is a fresh dynamic `import()`, not actually cached. Caching
+   *   in this class goes through the separate `_valueInCache`/`this.cache` mechanism
+   *   instead (see e.g. `classFunctions()`).
+   */
   async _importJSDefault({ path, cacheKey }) {
     return importJSDefault({ path, cache: this._cache, cacheKey })
   }
 
+  /** @param {object} props
+   * @param {string} props.path
+   * @param {string} [props.cacheKey] - see `_importJSDefault`'s note; unused today.
+   */
   async _importJSONDefault({ path, cacheKey }) {
     return importJSONDefault({ path, cache: this._cache, cacheKey })
   }

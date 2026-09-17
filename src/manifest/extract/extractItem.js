@@ -41,7 +41,7 @@ const performItem = async (props) => {
       const templateData = await templateDataForId({ id: templateId, path: props.parentLeafPath })
 
       result.children = await Promise.all(computed.templateCollection.folders.map(async (folder, index) => {
-        const { stat, name } = folder
+        const { name } = folder
         return performItem({
           ...props,
           item: templateData,

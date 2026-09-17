@@ -645,7 +645,10 @@ export default class ProtocolLoaderV1_0_0 extends BaseClass {
     //     return this.valueInCache(cacheKey)
     // }
 
-    const schemaPath = await this._schemaPath()
+    // Was: `const schemaPath = await this._schemaPath()` - dead, both because this whole
+    // method is obsolete (`_obs`) and because `_schemaPath` was never defined on this
+    // class; the result was never read either. Removed rather than "fixed" since there's
+    // nothing here to preserve.
     const path = `${this.configDirPath_obs()}/index.json`
 
     if (!(await checkFileExists(path))) {
@@ -743,7 +746,7 @@ export default class ProtocolLoaderV1_0_0 extends BaseClass {
 
       let _data = (await directoryGlob({
         path: `${__path}/**/*.js`, globOptions: {
-          mark: true,
+          markDirectories: true,
           ignore: ['**/lib/**']
         }
       }))
@@ -762,7 +765,7 @@ export default class ProtocolLoaderV1_0_0 extends BaseClass {
 
     const data = (await directoryGlob({
       path: `${path}/**/*.js`, globOptions: {
-        mark: true,
+        markDirectories: true,
         ignore: ['**/lib/**']
       }
     }))

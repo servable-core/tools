@@ -42,6 +42,11 @@ export default class ProtocolInstance {
     console.log("[@servable/tools/domain/protocolInstance] constructor() → Protocol instance initialized with ID:", this._id, "Unique path ID:", this._instancesPathIdString)
   }
 
+  /**
+   * @param {object} [props]
+   * @param {object} [props.servableConfig] - used to resolve a pinned version for this
+   *   protocol instance from `servableConfig.versions`, if present.
+   */
   async load({ servableConfig } = {}) {
     switch (this.loadState) {
       case 1: {
@@ -192,8 +197,16 @@ export default class ProtocolInstance {
   }
 
   // #region loader
-  async schemaRaw({ ad } = {}) {
-    return this.loader.schemaRaw({ ad: 43 })
+  /**
+   * @returns {Promise<object | null>} this protocol instance's raw `schema.json`
+   *   contents, memoized by the loader.
+   */
+  async schemaRaw() {
+    // The loader's own schemaRaw() ignores whatever argument it's given (confirmed: no
+    // reference to it in either v1.0.0.js's or v1.1.0.js's implementation) - this used to
+    // forward a hardcoded, unused `{ ad: 43 }` here, which was equally inert. Simplified
+    // rather than left as a misleading no-op parameter.
+    return this.loader.schemaRaw()
   }
   // #endregion
 }
