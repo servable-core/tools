@@ -97,4 +97,21 @@ describe('generateSchemaTypes', () => {
   test('tolerates a missing classes array entirely', () => {
     expect(() => generateSchemaTypes({})).not.toThrow()
   })
+
+  test('merges every class into ServableClassMap, keyed by its own name', () => {
+    const out = generateSchemaTypes(artifact([
+      { className: 'Genre', fields: {} },
+      { className: 'Category', fields: {} },
+    ]))
+
+    expect(out).toContain('declare global {\n  interface ServableClassMap {')
+    expect(out).toContain('"Category": Category')
+    expect(out).toContain('"Genre": Genre')
+  })
+
+  test('omits the ServableClassMap merge entirely when there are no classes', () => {
+    const out = generateSchemaTypes(artifact([]))
+
+    expect(out).not.toContain('ServableClassMap')
+  })
 })

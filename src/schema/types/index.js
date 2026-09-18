@@ -65,7 +65,11 @@ export interface ServableRelation<T> {
 /**
  * Generates one TypeScript interface per class in a `servable.schema.json` artifact, each
  * field typed from its Parse field type (`Pointer`/`Relation` narrowed to the target class
- * when that class is also present in the artifact).
+ * when that class is also present in the artifact) - plus a merge into
+ * @servable/parse-server-engine's `ServableClassMap`, keyed by class name, powering
+ * `Servable.App.Typed.object('ClassName')`/`.query('ClassName')` (see that package's own
+ * global.d.ts for why that's a separate, opt-in surface rather than a change to `Object`/`Query`
+ * themselves).
  *
  * @param {{ classes: Array<{ className: string, fields: Record<string, { type: string, targetClass?: string }> }> }} artifact
  *   - a normalized `servable.schema.json` (or anything with the same `classes` shape).
@@ -75,9 +79,9 @@ export default function generateSchemaTypes(artifact) {
   const classes = artifact?.classes || []
   const knownClassNames = new Set(classes.map(c => c.className))
 
-  const interfaces = classes
-    .slice()
-    .sort((a, b) => a.className.localeCompare(b.className))
+  const sortedClasses = classes.slice().sort((a, b) => a.className.localeCompare(b.className))
+
+  const interfaces = sortedClasses
     .map(({ className, fields = {} }) => {
       const fieldLines = Object.entries(fields)
         .sort(([a], [b]) => a.localeCompare(b))
@@ -93,5 +97,13 @@ export default function generateSchemaTypes(artifact) {
     })
     .join('\n\n')
 
-  return `${HEADER}\n${interfaces}\n`
+  // Omitted entirely (rather than merged as an empty interface) when there are no classes at
+  // all - matches generateProtocolResourceTypes()'s own ServableServiceCallMap handling.
+  const classMapMerge = sortedClasses.length
+    ? `declare global {\n  interface ServableClassMap {\n${sortedClasses
+        .map(({ className }) => `    ${JSON.stringify(className)}: ${className}`)
+        .join('\n')}\n  }\n}\n`
+    : ''
+
+  return [HEADER, interfaces, classMapMerge].filter(Boolean).join('\n')
 }
