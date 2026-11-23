@@ -62,6 +62,27 @@ const diffClass = ({ before, after }) => {
     }
   })
 
+  // ensuredIndexes (schema/ensuredIndexes.js), the same way: one added is SAFE (the engine makes it after boot, in the
+  // background); one removed or changed is BREAKING. A removed one is never dropped by the engine, but a running pod
+  // may rely on its uniqueness; a changed one clashes with the index already there under its name until someone
+  // drops it on purpose.
+  const ensuredIndexNames = new Set([
+    ...Object.keys(before.ensuredIndexes || {}),
+    ...Object.keys(after.ensuredIndexes || {}),
+  ])
+  ensuredIndexNames.forEach(indexName => {
+    const beforeIndex = before.ensuredIndexes?.[indexName]
+    const afterIndex = after.ensuredIndexes?.[indexName]
+    if (!beforeIndex && afterIndex) {
+      changes.push({ kind: 'ensuredIndexAdded', safe: true, className: before.className, indexName })
+    } else if (beforeIndex && !afterIndex) {
+      changes.push({ kind: 'ensuredIndexRemoved', safe: false, deprecated: false, className: before.className, indexName })
+    } else if (beforeIndex && afterIndex && JSON.stringify(beforeIndex) !== JSON.stringify(afterIndex)) {
+      // Order-sensitive on purpose, like `indexes` above: the order of an index's keys is part of the index.
+      changes.push({ kind: 'ensuredIndexChanged', safe: false, deprecated: false, className: before.className, indexName })
+    }
+  })
+
   // classLevelPermissions changes are reported but always SAFE: narrowing a CLP is an access
   // decision, not a data-integrity one - it can't produce the "old pod can't read what's there"
   // failure mode this whole plan/apply split exists to prevent. Flagged, not gated.

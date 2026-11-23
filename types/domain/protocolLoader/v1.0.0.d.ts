@@ -46,6 +46,7 @@ export default class ProtocolLoaderV1_0_0 extends BaseClass {
     classesSchemas(props: any): Promise<any>;
     schemaFields(props: any): Promise<any>;
     schemaIndexes(props: any): Promise<any>;
+    schemaEnsuredIndexes(props: any): Promise<any>;
     schemaRaw(props?: {}): Promise<any>;
     schemaClassLevelPermissions(props: any): Promise<any>;
     ownProtocols(): Promise<any>;

@@ -22,6 +22,15 @@ export default async (props) => {
       }
     }
 
+    // Guarded: a loader written before `ensuredIndexes` existed has no such method.
+    const _ensuredIndexes = await protocol.loader.schemaEnsuredIndexes?.()
+    if (_ensuredIndexes && Object.keys(_ensuredIndexes).length) {
+      _classSchema.ensuredIndexes = {
+        ..._classSchema.ensuredIndexes,
+        ..._ensuredIndexes
+      }
+    }
+
     //#TODO: protocol.loader
     const _classLevelPermissions = await protocol.loader.schemaClassLevelPermissions()
     let __classLevelPermissions

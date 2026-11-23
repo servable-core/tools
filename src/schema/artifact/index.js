@@ -11,6 +11,7 @@
 import buildSchema from '../build/index.js'
 import stableStringify from '../../lib/stableStringify.js'
 import crypto from 'crypto'
+import ensuredIndexesProblemsOf from '../ensuredIndexes.js'
 
 const ARTIFACT_VERSION = 1
 
@@ -20,6 +21,7 @@ const normalizeClass = (classSchema) => {
     fields = {},
     indexes = {},
     classLevelPermissions = {},
+    ensuredIndexes,
   } = classSchema || {}
 
   return {
@@ -27,6 +29,9 @@ const normalizeClass = (classSchema) => {
     fields,
     indexes,
     classLevelPermissions,
+    // Only when the class declares some (schema/ensuredIndexes.js): an artifact, and its hash, stay exactly what they
+    // were for every class that declares none.
+    ...(ensuredIndexes && Object.keys(ensuredIndexes).length ? { ensuredIndexes } : {}),
   }
 }
 
@@ -93,9 +98,18 @@ export const normalizeArtifact = ({ appProtocol, protocols }) => {
 // drift at boot (decision #4): the server calls normalizeArtifact() on the result of its own
 // buildSchema() run to hash "what the sources say right now," rather than calling this and
 // re-running buildSchema() a second time.
+//
+// It refuses (throws) an artifact whose `ensuredIndexes` are malformed, so `servable schema build`/`plan` stop on
+// them before a commit; the boot, which calls normalizeArtifact(), never does (the engine logs such an index and
+// carries on without it).
 export const compileArtifact = async ({ servableConfig }) => {
   const result = await buildSchema({ servableConfig })
-  return normalizeArtifact(result)
+  const artifact = normalizeArtifact(result)
+  const problems = ensuredIndexesProblemsOf({ classes: artifact.classes })
+  if (problems.length > 0) {
+    throw new Error(`The schema's ensuredIndexes cannot be made:\n→ ${problems.join('\n→ ')}`)
+  }
+  return artifact
 }
 
 // Content-only equality - ignores generatedAt, so re-running the build with no real schema

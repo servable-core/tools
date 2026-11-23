@@ -10,6 +10,7 @@ import plan from './schema/plan/index.js'
 import generateSchemaTypes from './schema/types/index.js'
 import buildProtocolResources from './schema/protocolResources/index.js'
 import generateProtocolResourceTypes from './schema/protocolResources/generateTypes.js'
+import ensuredIndexesProblemsOf from './schema/ensuredIndexes.js'
 // import validateProtocol from './lib/config/validate/protocol/index.js'
 import cleanProtocols from './lib/cleanProtocols.js'
 
@@ -36,6 +37,7 @@ export {
   generateSchemaTypes,
   buildProtocolResources,
   generateProtocolResourceTypes,
+  ensuredIndexesProblemsOf,
   cleanProtocols,
   generateGithubReadme,
   defineConfig,

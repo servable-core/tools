@@ -12,6 +12,7 @@ import plan from './schema/plan/index.js';
 import generateSchemaTypes from './schema/types/index.js';
 import buildProtocolResources from './schema/protocolResources/index.js';
 import generateProtocolResourceTypes from './schema/protocolResources/generateTypes.js';
+import ensuredIndexesProblemsOf from './schema/ensuredIndexes.js';
 import cleanProtocols from './lib/cleanProtocols.js';
 import generateGithubReadme from './document/gateway/generateGithubReadme/index.js';
 import defineConfig from './lib/defineConfig.js';
@@ -19,4 +20,4 @@ export namespace Domain {
     export { Servable };
 }
 import Servable from './domain/servable/index.js';
-export { accessManifest, documentProtocol, extractProtocol, ManifestEnums, ManifestEnumsV1_1_0, buildSchema, validateSchema, compileArtifact, artifactHashOf, normalizeArtifact, plan, generateSchemaTypes, buildProtocolResources, generateProtocolResourceTypes, cleanProtocols, generateGithubReadme, defineConfig };
+export { accessManifest, documentProtocol, extractProtocol, ManifestEnums, ManifestEnumsV1_1_0, buildSchema, validateSchema, compileArtifact, artifactHashOf, normalizeArtifact, plan, generateSchemaTypes, buildProtocolResources, generateProtocolResourceTypes, ensuredIndexesProblemsOf, cleanProtocols, generateGithubReadme, defineConfig };

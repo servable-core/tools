@@ -525,6 +525,17 @@ export default class ProtocolLoaderV1_0_0 extends BaseClass {
     return null
   }
 
+  // The indexes an engine makes itself, after boot (`ensuredIndexes`: unique, partial, on a dotted path...), that
+  // this protocol gives every class it is attached to. Its own classes declare theirs in `managed.classes[]`.
+  // See schema/ensuredIndexes.js.
+  async schemaEnsuredIndexes(props) {
+    const schema = await this.schemaRaw(props)
+    if (schema && schema.target) {
+      return schema.target.ensuredIndexes
+    }
+    return null
+  }
+
   async schemaRaw(props = {}) {
     // Memoized for the same reason v1.1.0.js's does - schemaFields()/schemaIndexes()/
     // schemaClassLevelPermissions() each call this independently for every protocol attached to
