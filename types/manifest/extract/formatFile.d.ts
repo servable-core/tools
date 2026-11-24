@@ -1,4 +1,6 @@
 declare function _default({ file }: {
-    file: any;
-}): Promise<any>;
+    file: {
+        path: string;
+    };
+}): Promise<object>;
 export default _default;

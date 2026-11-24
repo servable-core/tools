@@ -48,9 +48,12 @@ export default class ProtocolLoader {
    */
   async loadExtraction({ servableConfig } = {}) {
     try {
+      // The runtime reads a protocol's modules, never its files' JSDoc comments: those are read only to document it
+      // (`documentProtocol`, `generateGithubReadme`), which extracts the protocol again by its path, comments included.
       this.extraction = await extract({
         path: `${sanitizePath(this.path)}`,
-        dataTemplateType: DataTemplateType.Protocol
+        dataTemplateType: DataTemplateType.Protocol,
+        shouldReadComments: false
       })
       // const e = JSON.stringify(this.extraction)
       // console.log(this.extraction)

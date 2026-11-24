@@ -1,4 +1,4 @@
-declare function _default({ path, variant, mimeType, item, type, formatData, extraction: _extraction }: {
+declare function _default({ path, variant, mimeType, item, type, formatData, extraction: _extraction, shouldReadComments }: {
     path?: string;
     variant?: string;
     mimeType?: string;
@@ -6,5 +6,6 @@ declare function _default({ path, variant, mimeType, item, type, formatData, ext
     type?: string;
     formatData?: boolean;
     extraction?: object;
+    shouldReadComments?: boolean;
 }): Promise<object | null>;
 export default _default;

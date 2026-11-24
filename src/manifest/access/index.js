@@ -22,6 +22,8 @@ import { DataTemplateType } from '../data/1.0.0/enums.js'
  *   single-vs-array collapsing). Defaults to `true`.
  * @param {object} [props.extraction] - an already-extracted manifest tree, to skip
  *   re-extracting `path`.
+ * @param {boolean} [props.shouldReadComments] - when extracting `path` itself, also read
+ *   each file's JSDoc comments (for the documentation). Defaults to `true`.
  * @returns {Promise<object | null>} the manifest item's data, or `null` if not found.
  */
 export default async ({
@@ -31,12 +33,13 @@ export default async ({
   item,
   type = DataTemplateType.Protocol,
   formatData = true,
-  extraction: _extraction
+  extraction: _extraction,
+  shouldReadComments = true
 }) => {
 
   let extraction = _extraction
   if (!extraction && path) {
-    extraction = await extract({ path: `${sanitizePath(path)}`, dataTemplateType: type })
+    extraction = await extract({ path: `${sanitizePath(path)}`, dataTemplateType: type, shouldReadComments })
   }
 
   if (!extraction) {

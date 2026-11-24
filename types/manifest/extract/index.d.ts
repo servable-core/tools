@@ -1,8 +1,9 @@
-declare function _default({ path, dataTemplateType }: {
-    path: any;
+declare function _default({ path, dataTemplateType, shouldReadComments }: {
+    path: string;
     dataTemplateType?: string;
+    shouldReadComments?: boolean;
 }): Promise<{
-    reference: {};
-    tree: any;
+    reference: object;
+    tree: object;
 }>;
 export default _default;

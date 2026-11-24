@@ -6,7 +6,7 @@ import extractFiles from './extractFiles.js'
 import sanitizePath from '../../../lib/sanitize.js'
 
 export default async (props) => {
-  const { item, route, parentLeafPath } = props
+  const { item, route, parentLeafPath, shouldReadComments = true } = props
   const { type,
     mimeTypes,
     variants = [''],
@@ -91,7 +91,10 @@ export default async (props) => {
     if (files && files.length) {
       files = files.filter(a => a.module)
       if (files.length) {
-        result.data = await Promise.all(files.map(async file => formatFile({ file })))
+        // A file's comments are documentation only: a protocol instance's runtime extraction leaves them out.
+        result.data = shouldReadComments
+          ? await Promise.all(files.map(async file => formatFile({ file })))
+          : files
       }
     }
   } catch (e) {
